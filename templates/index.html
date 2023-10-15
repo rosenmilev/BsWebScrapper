@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<h1>Available jobs:</h1>
+{% for el in result %}
+<li><h2>{{ el.0 }}</h2>
+    {{ el.1 }}
+    {{ el.2 }}
+</li>
+{% endfor %}
+
+</body>
+</html>
