@@ -12,7 +12,19 @@ def index(request):
 			URL = form.cleaned_data['url']
 			page = requests.get(URL)
 			soup = BeautifulSoup(page.content, 'html.parser')
-			results = soup.find_all('h3')
+
+			needed_info = form.cleaned_data['data_needed']
+			results = ''
+			if needed_info == 'text':
+				results = soup.text
+			elif needed_info == 'headings':
+				heading_tags = ["h1", "h2", "h3"]
+				results = []
+				for tag in soup.find_all(heading_tags):
+					results.append(tag)
+
+			elif needed_info == 'links':
+				results = soup.find_all('a', href=True)
 
 			context = {
 				'results': results,

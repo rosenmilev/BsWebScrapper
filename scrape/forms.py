@@ -6,5 +6,12 @@ class ScrapeForm(forms.Form):
         label='Website URL',
         max_length=200,
         widget=forms.TextInput(attrs={'class': 'form-control'}),
-        initial='http://'
+        initial='http://',
+        required=True
+    )
+
+    data_needed = forms.ChoiceField(
+        label='Select type of data you want to scrap:',
+        choices=[('text', 'Text'), ('headings', 'Headings'), ('links', 'Links')],
+        widget=forms.Select(attrs={'class': 'form-control custom-select'})
     )
