@@ -11,7 +11,7 @@ class ScrapeForm(forms.Form):
     )
 
     data_needed = forms.ChoiceField(
-        label='Select type of data you want to scrap:',
+        label='Select type of data you want to scrape:',
         choices=[('text', 'Text'), ('headings', 'Headings'), ('links', 'Links')],
         widget=forms.Select(attrs={'class': 'form-control custom-select'})
     )

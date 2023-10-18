@@ -16,8 +16,7 @@ def index(request):
 				page = requests.get(URL)
 				page.raise_for_status()
 			except requests.exceptions.RequestException as e:
-				return HttpResponse('Ivalid URL')
-
+				return render(request, 'error.html', {'error_message': str(e)})
 
 			soup = BeautifulSoup(page.content, 'html.parser')
 			needed_info = form.cleaned_data['data_needed']
