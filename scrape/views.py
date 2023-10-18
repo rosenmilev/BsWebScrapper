@@ -1,8 +1,10 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 import requests
 from bs4 import BeautifulSoup
 from scrape.forms import ScrapeForm
+from django.http import Http404
+
 
 
 def index(request):
@@ -10,9 +12,14 @@ def index(request):
 		form = ScrapeForm(request.POST)
 		if form.is_valid():
 			URL = form.cleaned_data['url']
-			page = requests.get(URL)
-			soup = BeautifulSoup(page.content, 'html.parser')
+			try:
+				page = requests.get(URL)
+				page.raise_for_status()
+			except requests.exceptions.RequestException as e:
+				return HttpResponse('Ivalid URL')
 
+
+			soup = BeautifulSoup(page.content, 'html.parser')
 			needed_info = form.cleaned_data['data_needed']
 			results = ''
 			if needed_info == 'text':
@@ -30,9 +37,9 @@ def index(request):
 				'results': results,
 				'form': form
 			}
-			return render(request, 'scrape/result.html', context)
+			return render(request, 'result.html', context)
 	else:
 		form = ScrapeForm()
 
-	return render(request, 'scrape/index.html', {'form': form})
+	return render(request, 'index.html', {'form': form})
 
