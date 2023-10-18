@@ -1,13 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'scrape/base.html' %}
+{% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 
-    {% block content %}
 
-
+{% block content %}
         <form method="post">
-	        {% csrf_token %}
-	            {{ form|crispy }}
-	            <button class="btn btn-primary" type="submit">Scrape!</button>
+            {% csrf_token %}
+            {{ form|crispy}}
+            <button class="btn btn-primary" type="submit">Scrape!</button>
         </form>
 
-    {% endblock %}
+{% endblock %}
