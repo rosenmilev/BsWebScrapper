@@ -16,7 +16,12 @@ def index(request):
 				page = requests.get(URL)
 				page.raise_for_status()
 			except requests.exceptions.RequestException as e:
-				return render(request, 'error.html', {'error_message': str(e)})
+				if 'Max retries exceeded with url' in str(e):
+					e = 'URL not found'
+				else:
+					e = 'Unexpected error'
+
+				return render(request, 'error.html', {'error_message': e})
 
 			soup = BeautifulSoup(page.content, 'html.parser')
 			needed_info = form.cleaned_data['data_needed']
@@ -27,7 +32,7 @@ def index(request):
 				heading_tags = ["h1", "h2", "h3"]
 				results = []
 				for tag in soup.find_all(heading_tags):
-					results.append(tag)
+					results.append(tag.text.strip())
 
 			elif needed_info == 'links':
 				results = soup.find_all('a', href=True)

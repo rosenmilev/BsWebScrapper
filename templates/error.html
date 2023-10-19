@@ -5,7 +5,8 @@
     <title>Error</title>
 </head>
 <body>
-    <p>Invalid URL</p>
+    <p>There was an error:
+        {{ error_message }}</p>
     <button onclick="location.href='{% url 'index' %}'">Go back</button>
 </body>
 </html>
