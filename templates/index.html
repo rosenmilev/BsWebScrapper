@@ -4,10 +4,13 @@
 
 
 {% block content %}
+    <div class="container">
         <form method="post">
             {% csrf_token %}
             {{ form|crispy}}
             <button class="btn btn-primary" type="submit">Scrape!</button>
         </form>
-<a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+    <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+    </div>
+
 {% endblock %}
