@@ -8,7 +8,7 @@ import pandas as pd
 
 
 STOP_WORDS = {
-	'english': {
+	'english': [
 		'with', 'myself', "she's", 'how', 'who', "mightn't", 'shouldn', 'own', "won't", 'why', 'under', 'then',
 		'most', 'we', 'only', "should've", 'no', 'isn', 'those', 'was', 'through', 'they', 'of', 'while',
 		'weren', 'she', 'herself', 'an', 'them', 'a', 'just', 'off', "you'll", 'be', 'did', 'once', "hasn't",
@@ -23,29 +23,8 @@ STOP_WORDS = {
 		"hadn't", 'themselves', 'my', 'hers', 'his', 'between', 'doing', 'yours', 'hasn', 'mustn', 'ma', 'that',
 		'or', 'few', 'for', "weren't", 'by', "you'd", 'being', 'yourselves', 'yourself', 'after', 'too',
 		"don't", 'should', 'there', 'this', 'does', 'itself', 'doesn', 'at', 'these', 'shan', "couldn't",
-		'didn', 'now', 'been', 'couldn', 'o', "doesn't", 'but', 'do', 'am'},
-	'german': {
-		'aus', 'habe', 'deinem', 'hier', 'vor', 'ihren', 'bist', 'allen', 'dort', 'sehr', 'uns', 'im', 'anderr',
-		'das', 'wirst', 'auch', 'demselben', 'einigen', 'auf', 'ihr', 'was', 'für', 'welchem', 'hatten', 'weil',
-		'um', 'über', 'als', 'waren', 'nichts', 'deiner', 'an', 'euer', 'unseren', 'während', 'würden', 'seines',
-		'unseres', 'unter', 'jener', 'in', 'soll', 'alles', 'jedem', 'sind', 'sollte', 'aber', 'jede', 'nach',
-		'durch', 'keine', 'derselben', 'einiger', 'zwischen', 'sonst', 'andere', 'er', 'gewesen', 'werde',
-		'ihrer', 'alle', 'kann', 'meinen', 'welchen', 'weg', 'jeden', 'sein', 'wieder', 'unsere', 'eure', 'ein',
-		'meinem', 'dieselben', 'jeder', 'meiner', 'von', 'nun', 'manche', 'hinter', 'machen', 'dies', 'dessen',
-		'zwar', 'anderm', 'anders', 'die', 'bei', 'eurem', 'jenes', 'dann', 'dieses', 'mein', 'wollte', 'zu',
-		'mit', 'haben', 'keinem', 'viel', 'deines', 'mich', 'würde', 'solche', 'weiter', 'welche', 'eures',
-		'manchen', 'welches', 'hatte', 'euren', 'solchem', 'hin', 'manchem', 'seiner', 'keinen', 'mir', 'sich',
-		'derer', 'also', 'einige', 'wenn', 'werden', 'dich', 'kein', 'etwas', 'jedes', 'desselben', 'warst',
-		'daß', 'dem', 'denselben', 'es', 'eurer', 'gegen', 'deinen', 'ihm', 'jenen', 'jetzt', 'können',
-		'mancher', 'ihrem', 'ander', 'keines', 'musste', 'anderes', 'so', 'unser', 'zum', 'meines', 'will',
-		'nicht', 'des', 'dir', 'einigem', 'damit', 'hab', 'euch', 'solches', 'zur', 'seine', 'könnte', 'denn',
-		'einem', 'einiges', 'ohne', 'sie', 'derselbe', 'ihres', 'diesen', 'dasselbe', 'deine', 'dieser', 'muss',
-		'ich', 'ist', 'dein', 'dazu', 'du', 'vom', 'ins', 'solchen', 'bin', 'ihn', 'ihnen', 'meine', 'jene',
-		'unserem', 'war', 'seinen', 'bis', 'seinem', 'einer', 'den', 'hat', 'sondern', 'wie', 'wo', 'der', 'wir',
-		'noch', 'anderem', 'solcher', 'und', 'dieselbe', 'ihre', 'eines', 'jenem', 'einen', 'keiner', 'da',
-		'nur', 'oder', 'allem', 'aller', 'einig', 'wird', 'anderen', 'welcher', 'ob', 'eine', 'man', 'manches',
-		'wollen', 'doch', 'einmal', 'diesem', 'andern', 'dass', 'indem', 'anderer', 'selbst', 'diese', 'am'},
-	'bulgarian': {
+		'didn', 'now', 'been', 'couldn', 'o', "doesn't", 'but', 'do', 'am'],
+	'bulgarian': [
 		"а", "автентичен", "аз", "ако", "ала", "бе", "без", "беше", "би", "бивш", "бивша",
 		"бившо", "бил", "била", "били", "било", "благодаря", "близо", "бъдат", "бъде", "бяха",
 		"в", "вас", "ваш", "ваша", "вероятно", "вече", "взема", "ви", "вие", "винаги", "внимава",
@@ -71,11 +50,13 @@ STOP_WORDS = {
 		"ч", "часа", "че", "често", "чрез", "ще", "щом", "юмрук", "я", "як", "новини", "българия", 'ян', 'фев', 'мар',
 		"апр", "април", "май", "юни", "юли", "авг", "август", "сеп", "септември", "окт", "октомври", "ное", "ноември",
 		"дек", "декември", "януари", "февруари", "март", "новини", "спорт"
-	}
+	]
 }
 
 PUNCTUATION = {'!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?',
 				'@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', '...', "'"}
+
+BULGARIAN_ALPHABET = 'абвгдежзийклмнопрстуфхцчшщъьюя'
 
 
 # Tokenize all words in the scraped text
@@ -88,15 +69,15 @@ def tokenize_text_to_words(text):
 # Filter the stop words and determine 20 most used words and put them to dataframe
 def get_keywords(tokens, language, n=20):
 	filtered_tokens = [token.lower() for token in tokens if token.lower() not in STOP_WORDS[language]]
-# Removing irrelevant words containing apostrophe
-	filtered_tokens = [token.lower() for token in filtered_tokens if not any(char in token.lower() for char in "',.`")]
-# Filter non-bulgarian words
+# Filter non-bulgarian words and words containing non-alphabetic character
 	if language == 'bulgarian':
-		filtered_tokens = [token.lower() for token in filtered_tokens if not
+		filtered_tokens = [token.lower() for token in filtered_tokens if
+						any(char in token.lower() for char in BULGARIAN_ALPHABET)]
+# Filter non-english words and words containing non-alphabetic character
+	if language == 'english':
+		filtered_tokens = [token.lower() for token in filtered_tokens if
 						any(char in token.lower() for char in string.ascii_lowercase)]
-# Filter words containing numbers
-	filtered_tokens = [token.lower() for token in filtered_tokens if not
-						any(char in token.lower() for char in string.digits)]
+
 	freq_dist = FreqDist(filtered_tokens)
 	main_keywords = freq_dist.most_common(n)
 	# df_keywords = pd.DataFrame(main_keywords, columns=['keyword', 'frequency'])

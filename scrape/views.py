@@ -1,11 +1,15 @@
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
-from scrape.forms import ScrapeForm
+from scrape.forms import ScrapeForm, CustomUserCreationForm
 from .utils import tokenize_text_to_words, get_keywords
 from bs4 import BeautifulSoup
 
 
+@login_required
 def index(request):
 	if request.method == "POST":
 		form = ScrapeForm(request.POST)
@@ -47,3 +51,18 @@ def index(request):
 
 	return render(request, 'index.html', {'form': form})
 
+
+def register(request):
+	if request.method == 'POST':
+		form = CustomUserCreationForm(request.POST)
+		if form.is_valid():
+			form.save()
+			username = form.cleaned_data.get('username')
+			email = form.cleaned_data.get('email')
+			password = form.cleaned_data.get('password1')
+			user = authenticate(username=username, email=email, password=password)
+			login(request, user)
+			return redirect('index')
+	else:
+		form = CustomUserCreationForm()
+	return render(request, 'registration/register.html', {'form': form})
