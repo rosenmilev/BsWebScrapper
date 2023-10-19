@@ -1,4 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-    {{ results }}
+    <h1 class="text-center font-weight-light ">These are the 20 most common words and their frequencies on <span style="color: blue; font-weight: bold;">{{ url }}</span></h1>
+        <div class="container" style="max-width: 50%">
+        <a href="{% url 'index' %}" class="btn btn-primary">Go back</a>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Word</th>
+                        <th>Frequency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in results %}
+                        <tr>
+                            <td>{{r.0}}</td>
+                            <td>{{r.1}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
 {% endblock %}

@@ -43,7 +43,8 @@ def index(request):
 
 			context = {
 				'results': result,
-				'form': form
+				'form': form,
+				'url': URL
 			}
 			return render(request, 'result.html', context)
 	else:
@@ -58,9 +59,8 @@ def register(request):
 		if form.is_valid():
 			form.save()
 			username = form.cleaned_data.get('username')
-			email = form.cleaned_data.get('email')
 			password = form.cleaned_data.get('password1')
-			user = authenticate(username=username, email=email, password=password)
+			user = authenticate(username=username, password=password)
 			login(request, user)
 			return redirect('index')
 	else:
