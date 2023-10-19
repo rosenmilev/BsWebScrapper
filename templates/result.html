@@ -1,24 +1,46 @@
 {% extends 'base.html' %}
+{% block navbar %}
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index' %}">Home</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+      </li>
+    </ul>
+{% endblock %}
 {% block content %}
-    <h1 class="text-center font-weight-light ">These are the 20 most common words and their frequencies on <span style="color: blue; font-weight: bold;">{{ url }}</span></h1>
+    <h2 class=" font-weight-light ">These are the 20 most common words and their frequencies on <span style="color: grey; font-weight: bold;">{{ url }}</span></h2>
         <div class="container" style="max-width: 50%">
-        <a href="{% url 'index' %}" class="btn btn-primary">Go back</a>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Word</th>
-                        <th>Frequency</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for r in results %}
-                        <tr>
-                            <td>{{r.0}}</td>
-                            <td>{{r.1}}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+
+            <div class="row">
+                {% for res in results %}
+                    <div class="col-md-4 mb-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ res.0 }}</h5>
+                                <p class="card-text">Frequency: {{ res.1 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+{#            <table class="table">#}
+{#                <thead>#}
+{#                    <tr>#}
+{#                        <th>Word</th>#}
+{#                        <th>Frequency</th>#}
+{#                    </tr>#}
+{#                </thead>#}
+{#                <tbody>#}
+{#                    {% for r in results %}#}
+{#                        <tr>#}
+{#                            <td>{{r.0}}</td>#}
+{#                            <td>{{r.1}}</td>#}
+{#                        </tr>#}
+{#                    {% endfor %}#}
+{#                </tbody>#}
+{#            </table>#}
         </div>
 
 {% endblock %}
