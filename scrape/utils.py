@@ -3,6 +3,7 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from nltk.probability import FreqDist
+import string
 import pandas as pd
 
 
@@ -67,18 +68,14 @@ STOP_WORDS = {
 		"смях", "според", "сред", "срещу", "сте", "съм", "със", "също", "т", "т.н.", "тази", "така",
 		"такива", "такъв", "там", "твой", "те", "тези", "ти", "то", "това", "тогава", "този", "той",
 		"толкова", "точно", "три", "трябва", "тук", "тъй", "тя", "тях", "у", "утре", "харесва", "хиляди",
-		"ч", "часа", "че", "често", "чрез", "ще", "щом", "юмрук", "я", "як"}
+		"ч", "часа", "че", "често", "чрез", "ще", "щом", "юмрук", "я", "як", "новини", "българия", 'ян', 'фев', 'мар',
+		"апр", "април", "май", "юни", "юли", "авг", "август", "сеп", "септември", "окт", "октомври", "ное", "ноември",
+		"дек", "декември", "януари", "февруари", "март", "новини", "спорт"
+	}
 }
 
 PUNCTUATION = {'!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?',
 				'@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', '...', "'"}
-
-
-# Scrape the text data
-def scrape_data(page):
-	soup = BeautifulSoup(page.content, 'html.parser')
-	scraped_text = soup.text
-	return scraped_text
 
 
 # Tokenize all words in the scraped text
@@ -91,10 +88,19 @@ def tokenize_text_to_words(text):
 # Filter the stop words and determine 20 most used words and put them to dataframe
 def get_keywords(tokens, language, n=20):
 	filtered_tokens = [token.lower() for token in tokens if token.lower() not in STOP_WORDS[language]]
+# Removing irrelevant words containing apostrophe
+	filtered_tokens = [token.lower() for token in filtered_tokens if not any(char in token.lower() for char in "',.`")]
+# Filter non-bulgarian words
+	if language == 'bulgarian':
+		filtered_tokens = [token.lower() for token in filtered_tokens if not
+						any(char in token.lower() for char in string.ascii_lowercase)]
+# Filter words containing numbers
+	filtered_tokens = [token.lower() for token in filtered_tokens if not
+						any(char in token.lower() for char in string.digits)]
 	freq_dist = FreqDist(filtered_tokens)
 	main_keywords = freq_dist.most_common(n)
-	df_keywords = pd.DataFrame(main_keywords, columns=['keyword', 'frequency'])
-	return df_keywords
+	# df_keywords = pd.DataFrame(main_keywords, columns=['keyword', 'frequency'])
+	return main_keywords
 
 
 

@@ -2,7 +2,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 import requests
 from scrape.forms import ScrapeForm
-from .utils import scrape_data, tokenize_text_to_words, get_keywords
+from .utils import tokenize_text_to_words, get_keywords
+from bs4 import BeautifulSoup
 
 
 def index(request):
@@ -21,7 +22,8 @@ def index(request):
 
 				return render(request, 'error.html', {'error_message': e})
 			result = ''
-			scraped_data = scrape_data(page)
+			scraped_data = BeautifulSoup(page.content, 'html.parser')
+
 			action_type = form.cleaned_data['action_type']
 			language = form.cleaned_data['website_language']
 			text = scraped_data.text
