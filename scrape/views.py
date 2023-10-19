@@ -1,10 +1,8 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 import requests
-from bs4 import BeautifulSoup
 from scrape.forms import ScrapeForm
-from django.http import Http404
-
+from .utils import scrape_data, tokenize_text_to_words, get_keywords
 
 
 def index(request):
@@ -22,23 +20,23 @@ def index(request):
 					e = 'Unexpected error'
 
 				return render(request, 'error.html', {'error_message': e})
+			result = ''
+			scraped_data = scrape_data(page)
+			action_type = form.cleaned_data['action_type']
+			language = form.cleaned_data['website_language']
+			text = scraped_data.text
 
-			soup = BeautifulSoup(page.content, 'html.parser')
-			needed_info = form.cleaned_data['data_needed']
-			results = ''
-			if needed_info == 'text':
-				results = soup.text
-			elif needed_info == 'headings':
-				heading_tags = ["h1", "h2", "h3"]
-				results = []
-				for tag in soup.find_all(heading_tags):
-					results.append(tag.text.strip())
-
-			elif needed_info == 'links':
-				results = soup.find_all('a', href=True)
+			if action_type == 'text':
+				result = scraped_data.get_text()
+			elif action_type == 'key_words':
+				tokens = tokenize_text_to_words(text)
+				keywords_with_freq = get_keywords(tokens, language)
+				result = keywords_with_freq
+			elif action_type == 'all_words':
+				result = tokenize_text_to_words(text)
 
 			context = {
-				'results': results,
+				'results': result,
 				'form': form
 			}
 			return render(request, 'result.html', context)
