@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class ScrapeForm(forms.Form):
     url = forms.URLField(
         label='Website URL',
-        max_length=200,
+        max_length=150,
         widget=forms.TextInput(attrs={'class': 'form-control'}),
         initial='http://',
         required=True

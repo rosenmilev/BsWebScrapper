@@ -69,20 +69,21 @@ def tokenize_text_to_words(text):
 # Filter the stop words and determine 20 most used words and put them to dataframe
 def get_keywords(tokens, language, n=20):
 	filtered_tokens = [token.lower() for token in tokens if token.lower() not in STOP_WORDS[language]]
-# Filter non-bulgarian words and words containing non-alphabetic character
+# Filter non-bulgarian words
 	if language == 'bulgarian':
 		filtered_tokens = [token.lower() for token in filtered_tokens if
 						any(char in token.lower() for char in BULGARIAN_ALPHABET)]
-# Filter non-english words and words containing non-alphabetic character
+
+# Filter non-english words
 	if language == 'english':
 		filtered_tokens = [token.lower() for token in filtered_tokens if
 						any(char in token.lower() for char in string.ascii_lowercase)]
+
+# Filter incorrect tokenized words containing "`", "'" or "."
+	filtered_tokens = [token.lower() for token in filtered_tokens if not
+						any(char in token.lower() for char in "`'.")]
 
 	freq_dist = FreqDist(filtered_tokens)
 	main_keywords = freq_dist.most_common(n)
 	# df_keywords = pd.DataFrame(main_keywords, columns=['keyword', 'frequency'])
 	return main_keywords
-
-
-
-
