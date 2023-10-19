@@ -11,7 +11,6 @@
         <form method="post" action="{% url 'login' %}">
           {% csrf_token %}
           <div class="form-group">
-            {{ form.username.label_tag }}
               <label>{{ form.username.label_tag }}</label>
             <input
               type="text"
@@ -23,7 +22,6 @@
           </div>
 
           <div class="form-group">
-            {{ form.password.label_tag }}
               <label>{{ form.password.label_tag }}</label>
             <input
               type="password"
@@ -38,10 +36,9 @@
             {{ error|escape }}
           </p>
           {% endfor %} {% endif %}
-          <button type="submit" class="btn btn-primary">Login</button>
+          <button type="submit" class="btn btn-light">Login</button>
         </form>
-      <div>Don`t have an account?</div>
-      <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+      <p>Don`t have an account? <span><a href="{% url 'register' %}" class="skip-to-content-link">Register</a></span></p>
       </div>
     </div>
   </div>
