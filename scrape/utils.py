@@ -1,10 +1,7 @@
-from bs4 import BeautifulSoup
 from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
 from nltk.probability import FreqDist
 import string
-import pandas as pd
+
 
 
 STOP_WORDS = {
