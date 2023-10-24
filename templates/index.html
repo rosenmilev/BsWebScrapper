@@ -3,22 +3,40 @@
 {% load crispy_forms_tags %}
 
 {% block navbar %}
-<ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'index' %}">Home</a>
-      </li>
+    <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-      </li>
+            <a class="nav-link" href="{% url 'index' %}">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
     </ul>
 {% endblock %}
 
 {% block content %}
+    <div class="font-italic font-weight-light col-md-6 offset-md-3 mt-3">
+        <h2 class="text-center">Data Extraction Options</h2>
+        <p>When analyzing the content of the provided URL, you have the following data extraction options:</p>
+        <ul>
+            <li>Extract keywords with corresponding frequencies: We will analyze the content to identify 20 of the most
+                frequently mentioned words and their corresponding frequencies. These words provide valuable insights
+                into the topics and themes that are currently prominent on the website.
+            </li>
+            <li>Extract all unique words: This option provides a list of all unique words found in the content,
+                eliminating duplicates and displaying each word only once.
+            </li>
+            <li>Extract the entire plain text: This option allows you to access the complete, unprocessed text as it
+                appears on the website, including all words and characters.
+            </li>
+        </ul>
+        <p>Choose the option that best suits your needs for content analysis.</p>
+    </div>
+
 
     <div class="col-md-6 offset-md-3 mt-3">
         <form method="post">
             {% csrf_token %}
-            {{ form|crispy}}
+            {{ form|crispy }}
             <button class="btn btn-light" type="submit">Scrape!</button>
         </form>
     </div>

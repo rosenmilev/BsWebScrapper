@@ -49,12 +49,12 @@ STOP_WORDS = {
 		"толкова", "точно", "три", "трябва", "тук", "тъй", "тя", "тях", "у", "утре", "харесва", "хиляди",
 		"ч", "часа", "че", "често", "чрез", "ще", "щом", "юмрук", "я", "як", "новини", "българия", 'ян', 'фев', 'мар',
 		"апр", "април", "май", "юни", "юли", "авг", "август", "сеп", "септември", "окт", "октомври", "ное", "ноември",
-		"дек", "декември", "януари", "февруари", "март", "новини", "спорт"
+		"дек", "декември", "януари", "февруари", "март", "новини", "спорт", "снимка", "снимки"
 	]
 }
 
 PUNCTUATION = {'!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?',
-				'@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', '...', "'"}
+				'@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', '...', "'", "``", "''"}
 
 BULGARIAN_ALPHABET = 'абвгдежзийклмнопрстуфхцчшщъьюя'
 
@@ -62,28 +62,26 @@ BULGARIAN_ALPHABET = 'абвгдежзийклмнопрстуфхцчшщъью
 # Tokenize all words in the scraped text
 def tokenize_text_to_words(text):
 	tokens = word_tokenize(text)
+	return tokens
+
+
+# Filter stop words, punctuation and words containing non-alphabetical symbols
+def filter_words(tokens, language):
 	filtered_tokens = [token.lower() for token in tokens if token.lower() not in PUNCTUATION]
-	return filtered_tokens
-
-
-# Filter the stop words and determine 20 most used words and put them to dataframe
-def get_keywords(tokens, language, n=20):
-	filtered_tokens = [token.lower() for token in tokens if token.lower() not in STOP_WORDS[language]]
-# Filter non-bulgarian words
+	filtered_tokens = [token.lower() for token in filtered_tokens if token.lower() not in STOP_WORDS[language]]
 	if language == 'bulgarian':
 		filtered_tokens = [token.lower() for token in filtered_tokens if
 						any(char in token.lower() for char in BULGARIAN_ALPHABET)]
-
-# Filter non-english words
 	if language == 'english':
 		filtered_tokens = [token.lower() for token in filtered_tokens if
 						any(char in token.lower() for char in string.ascii_lowercase)]
-
-# Filter incorrect tokenized words containing "`", "'" or "."
 	filtered_tokens = [token.lower() for token in filtered_tokens if not
 						any(char in token.lower() for char in "`'.")]
+	return filtered_tokens
 
-	freq_dist = FreqDist(filtered_tokens)
+
+# Determine 20 most used words and put them to dataframe
+def get_keywords(tokens, n=20):
+	freq_dist = FreqDist(tokens)
 	main_keywords = freq_dist.most_common(n)
-	# df_keywords = pd.DataFrame(main_keywords, columns=['keyword', 'frequency'])
 	return main_keywords

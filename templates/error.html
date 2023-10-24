@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-<body>
+    <body>
     <p class="container text-center">There was an error:
         {{ error_message }}
         <a href="{% url 'index' %}" class="skip-to-content-link">Go back</a>
     </p>
-</body>
+    </body>
 {% endblock %}

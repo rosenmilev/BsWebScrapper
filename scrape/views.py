@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 import requests
 from scrape.forms import ScrapeForm, CustomUserCreationForm
-from .utils import tokenize_text_to_words, get_keywords
+from .utils import tokenize_text_to_words, get_keywords, filter_words
 from bs4 import BeautifulSoup
 
 
@@ -33,18 +33,21 @@ def index(request):
 			text = scraped_data.text
 
 			if action_type == 'text':
-				result = scraped_data.get_text()
-			elif action_type == 'key_words':
+				result = scraped_data.text.strip()
+			else:
 				tokens = tokenize_text_to_words(text)
-				keywords_with_freq = get_keywords(tokens, language)
-				result = keywords_with_freq
-			elif action_type == 'all_words':
-				result = tokenize_text_to_words(text)
+				filtered_tokens = filter_words(tokens, language)
+
+				if action_type == 'key_words':
+					result = get_keywords(filtered_tokens)
+				if action_type == 'all_words':
+					result = filtered_tokens
 
 			context = {
 				'results': result,
 				'form': form,
-				'url': URL
+				'url': URL,
+				'action': action_type
 			}
 			return render(request, 'result.html', context)
 	else:

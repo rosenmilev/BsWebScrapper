@@ -8,14 +8,13 @@ class ScrapeForm(forms.Form):
         label='Website URL',
         max_length=150,
         widget=forms.TextInput(attrs={'class': 'form-control'}),
-        initial='http://',
         required=True
     )
 
     action_type = forms.ChoiceField(
         label='Select what you want to do:',
-        choices=[('key_words', 'Extract 20 most used keywords with frequencies'),
-                 ('all_words', 'Extract all words tokenized'), ('text', 'Extract plain text')],
+        choices=[('key_words', 'Extract keywords with corresponding frequencies'),
+                 ('all_words', 'Extract all unique words'), ('text', 'Extract the entire plain text')],
         widget=forms.Select(attrs={'class': 'form-control custom-select'})
     )
 
