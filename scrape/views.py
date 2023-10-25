@@ -1,14 +1,20 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 import requests
-from scrape.forms import ScrapeForm, CustomUserCreationForm
+from django.urls import reverse
+from django.views.generic import CreateView
+
+from scrape.forms import ScrapeForm, CustomUserCreationForm, SaveDataForm
+from .models import ScrapedData
 from .utils import tokenize_text_to_words, get_keywords, filter_words
 from bs4 import BeautifulSoup
 
 
 @login_required
 def index(request):
+	success_flag = request.GET.get('success')
 	if request.method == "POST":
 		form = ScrapeForm(request.POST)
 		if form.is_valid():
@@ -41,17 +47,20 @@ def index(request):
 				if action_type == 'all_words':
 					result = filtered_tokens
 
+			request.session['scraped_content'] = result
+			request.session['scraped_url'] = URL
+
 			context = {
 				'results': result,
 				'form': form,
 				'url': URL,
-				'action': action_type
+				'action': action_type,
 			}
 			return render(request, 'result.html', context)
 	else:
 		form = ScrapeForm()
 
-	return render(request, 'index.html', {'form': form})
+	return render(request, 'index.html', {'form': form, 'success_flag': success_flag})
 
 
 def register(request):
@@ -67,3 +76,28 @@ def register(request):
 	else:
 		form = CustomUserCreationForm()
 	return render(request, 'registration/register.html', {'form': form})
+
+
+@login_required
+def save_data(request):
+	scraped_content = request.session.get('scraped_content', '')
+	scraped_url = request.session.get('scraped_url', '')
+	user = request.user
+	success = None
+
+	save_form = SaveDataForm(initial={'website_url': scraped_url, 'scraped_content': scraped_content})
+
+	if request.method == "POST":
+		save_form = SaveDataForm(request.POST)
+		if save_form.is_valid():
+			save_form.instance.user = user
+			save_form.save()
+
+			return HttpResponseRedirect(reverse('index') + f'?success=OK')
+
+	context = {
+		'scraped_content': scraped_content,
+		'scraped_url': scraped_url,
+		'form': save_form
+	}
+	return render(request, 'save_data.html', context)

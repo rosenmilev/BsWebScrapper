@@ -14,6 +14,12 @@
 {% endblock %}
 
 {% block content %}
+    {% if success_flag %}
+            <div class="alert alert-success text-success text-center">
+                Data Saved Successfully
+            </div>
+    {% endif %}
+
     <div class="font-italic font-weight-light col-md-6 offset-md-3 mt-3">
         <h2 class="text-center">Data Extraction Options</h2>
         <p>When analyzing the content of the provided URL, you have the following data extraction options:</p>
