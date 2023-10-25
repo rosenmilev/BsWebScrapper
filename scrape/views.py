@@ -101,3 +101,15 @@ def save_data(request):
 		'form': save_form
 	}
 	return render(request, 'save_data.html', context)
+
+
+@login_required
+def profile(request):
+	logged_user = request.user
+	saved_data = ScrapedData.objects.filter(user=logged_user)
+
+	context = {
+		'user': logged_user,
+		'user_data': saved_data
+	}
+	return render(request, 'registration/profile.html', context)
