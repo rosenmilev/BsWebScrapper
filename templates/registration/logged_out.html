@@ -2,7 +2,7 @@
 {% block navbar %}
     <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Login</a>
+
         </li>
     </ul>
 {% endblock %}
@@ -11,6 +11,7 @@
         <div class="row">
             <div class="col-md-12 col-centered">
                 <h1 class="mt-5 mb-3">You have logged out.</h1>
+                <a class="btn btn-secondary text-center" href="{% url 'login' %}">Login</a>
             </div>
         </div>
     </div>
