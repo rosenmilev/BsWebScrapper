@@ -20,66 +20,66 @@
 
         {% if user_data %}
             <div class="row mt-3">
-            <div class="col-md-12">
-                <h4 class="text-center">Saved Data:</h4>
-            </div>
-            </div>
-        {% for data in user_data %}
-            <div class="card mt-3">
-                <div class="card-body">
-                    <h5 class="card-title">Website URL: {{ data.website_url }}</h5>
-                    <p class="card-text">Content:
-                        <textarea class="form-control" id="result_{{ data.id }}" rows="3" readonly
-                            style="width: 80%; height: 80px;">{{ data.scraped_content }}
-                        </textarea>
-                    </p>
-                    <p class="card-text">Saved on: {{ data.timestamp }}</p>
-                    <button class="btn btn-secondary" onclick="myFunction({{ data.id }})">Copy content</button>
-
-                    <form method="post" action="{% url 'delete' pk=data.id %}" style="display: inline;">
-                        {% csrf_token %}
-                        <button class="btn btn-danger" onclick="confirmDelete({{ data.id }})">Delete</button>
-
-</form>
-
-                    <div id="details_{{ data.id }}" style="display: none;">
-                    </div>
+                <div class="col-md-12">
+                    <h4 class="text-center">Saved Data:</h4>
                 </div>
             </div>
-        {% endfor %}
-    {% endif %}
-    {% if not user_data %}
-        <h4 class="text-center">No saved data.</h4>
-    {% endif %}
+            {% for data in user_data %}
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Website URL: {{ data.website_url }}</h5>
+                        <p class="card-text">Content:
+                            <textarea class="form-control" id="result_{{ data.id }}" rows="3" readonly
+                                      style="width: 80%; height: 80px;">{{ data.scraped_content }}
+                        </textarea>
+                        </p>
+                        <p class="card-text">Saved on: {{ data.timestamp }}</p>
+                        <button class="btn btn-secondary" onclick="myFunction({{ data.id }})">Copy content</button>
+
+                        <form method="post" action="{% url 'delete' pk=data.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button class="btn btn-danger" onclick="confirmDelete({{ data.id }})">Delete</button>
+
+                        </form>
+
+                        <div id="details_{{ data.id }}" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if not user_data %}
+            <h4 class="text-center">No saved data.</h4>
+        {% endif %}
     </div>
 
-{% block scripts %}
-    <script>
-    function myFunction(dataID) {
+    {% block scripts %}
+        <script>
+            function myFunction(dataID) {
 
-  var copyText = document.getElementById("result_" + dataID);
+                var copyText = document.getElementById("result_" + dataID);
 
-  copyText.select();
-  copyText.setSelectionRange(0, 99999);
+                copyText.select();
+                copyText.setSelectionRange(0, 99999);
 
-  navigator.clipboard.writeText(copyText.value);
+                navigator.clipboard.writeText(copyText.value);
 
-  alert("Copied the text: " + copyText.value);
-}
+                alert("Copied the text: " + copyText.value);
+            }
 
-function confirmDelete(itemId) {
-    var confirmation = confirm("Are you sure you want to delete this item?");
+            function confirmDelete(itemId) {
+                var confirmation = confirm("Are you sure you want to delete this item?");
 
-    if (confirmation) {
+                if (confirmation) {
 
-        window.location.href = "{% url 'delete' pk=0 %}".replace('0', itemId);
-    } else {
+                    window.location.href = "{% url 'delete' pk=0 %}".replace('0', itemId);
+                } else {
 
-        return false;
-    }
-}
+                    return false;
+                }
+            }
 
-</script>
+        </script>
 
     {% endblock %}
 {% endblock %}
