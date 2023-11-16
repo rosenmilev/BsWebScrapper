@@ -1,18 +1,101 @@
 {% extends 'base.html' %}
-{% block content %}
-    <div class="font-weight-light text-center">
-        <h3>Welcome, {{ user }}</h3>
-        <h3>Saved Data:</h3>
-    </div>
-    {% for data in user_data %}
-
-<div class="col-md-6 offset-md-3 mt-3 text-center">
-            <p>Website URL: {{ data.website_url }}</p>
-            Content: <textarea class="form-control" id="result" rows="5" readonly
-                  style="width: 80%; height: 300px;">{{ data.scraped_content }}
-            </textarea>
-        <p class="col-md-6 text-center">Saved on: {{ data.timestamp }}</p>
-</div>
-    {% endfor %}
-
+{% block navbar %}
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'index' %}">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+    </ul>
 {% endblock %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">Welcome, {{ user }}!</h3>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <h4 class="text-center">Saved Data:</h4>
+            </div>
+        </div>
+
+        {% for data in user_data %}
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Website URL: {{ data.website_url }}</h5>
+                    <p class="card-text">Content:
+                        <textarea class="form-control" id="result_{{ data.id }}" rows="3" readonly
+                            style="width: 80%; height: 80px;">{{ data.scraped_content }}
+                        </textarea>
+                    </p>
+                    <p class="card-text">Saved on: {{ data.timestamp }}</p>
+                    <button class="btn btn-secondary" onclick="myFunction({{ data.id }})">Copy content</button>
+                    <div id="details_{{ data.id }}" style="display: none;">
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% block scripts %}
+    <script>
+    function myFunction(dataID) {
+
+  var copyText = document.getElementById("result_" + dataID);
+
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+
+  navigator.clipboard.writeText(copyText.value);
+
+  alert("Copied the text: " + copyText.value);
+}
+</script>
+    {% endblock %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{#{% extends 'base.html' %}#}
+{#{% block content %}#}
+{#    <div class="font-weight-light text-center">#}
+{#        <h3>Welcome, {{ user }}</h3>#}
+{#        <h3>Saved Data:</h3>#}
+{#    </div>#}
+{#    {% for data in user_data %}#}
+{#        {{data.website_url}}#}
+{#        <div class="box">#}
+{##}
+{#        <span class="is-small has-text-grey-light">#}
+{#            Saved on : {{ data.timestamp }}#}
+{#        </span>#}
+{#        </div>#}
+        {{ data.scraped_content }}
+{#<div class="col-md-6 offset-md-3 mt-3 text-center">#}
+{#            <p>Website URL: {{ data.website_url }}</p>#}
+{#            Content: <textarea class="form-control" id="result" rows="5" readonly#}
+{#                  style="width: 80%; height: 300px;">{{ data.scraped_content }}#}
+{#            </textarea>#}
+{#        <p class="col-md-6 text-center">Saved on: {{ data.timestamp }}</p>#}
+{#</div>#}
+{#    {% endfor %}#}
+{##}
+{#{% endblock %}#}
