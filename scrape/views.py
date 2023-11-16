@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 import requests
-from django.urls import reverse
-from django.views.generic import CreateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView, DeleteView
 
 from scrape.forms import ScrapeForm, CustomUserCreationForm, SaveDataForm
 from .models import ScrapedData
@@ -113,3 +113,9 @@ def profile(request):
 		'user_data': saved_data
 	}
 	return render(request, 'registration/profile.html', context)
+
+
+class DeleteUserSavedData(DeleteView):
+	model = ScrapedData
+	template_name = 'confirm_delete_data.html'
+	success_url = reverse_lazy('profile')

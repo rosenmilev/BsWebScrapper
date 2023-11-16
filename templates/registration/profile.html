@@ -34,6 +34,10 @@
                     </p>
                     <p class="card-text">Saved on: {{ data.timestamp }}</p>
                     <button class="btn btn-secondary" onclick="myFunction({{ data.id }})">Copy content</button>
+                    <form method="post" action="{% url 'delete' pk=data.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                    </form>
                     <div id="details_{{ data.id }}" style="display: none;">
                     </div>
                 </div>

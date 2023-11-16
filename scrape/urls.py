@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
+from .views import DeleteUserSavedData
 
 urlpatterns = [
 	path('', views.index, name='index'),
@@ -10,4 +11,5 @@ urlpatterns = [
 	path('accounts/register/', views.register, name='register'),
 	path('save-data', views.save_data, name='save_data'),
 	path('accounts/profile', views.profile, name='profile'),
+	path('<pk>/delete/', DeleteUserSavedData.as_view(), name='delete'),
 ]
