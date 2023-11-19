@@ -20,7 +20,7 @@ STOP_WORDS = {
 		"hadn't", 'themselves', 'my', 'hers', 'his', 'between', 'doing', 'yours', 'hasn', 'mustn', 'ma', 'that',
 		'or', 'few', 'for', "weren't", 'by', "you'd", 'being', 'yourselves', 'yourself', 'after', 'too',
 		"don't", 'should', 'there', 'this', 'does', 'itself', 'doesn', 'at', 'these', 'shan', "couldn't",
-		'didn', 'now', 'been', 'couldn', 'o', "doesn't", 'but', 'do', 'am'],
+		'didn', 'now', 'been', 'couldn', 'o', "doesn't", 'but', 'do', 'am', 'video'],
 	'bulgarian': [
 		"а", "автентичен", "аз", "ако", "ала", "бе", "без", "беше", "би", "бивш", "бивша",
 		"бившо", "бил", "била", "били", "било", "благодаря", "близо", "бъдат", "бъде", "бяха",
@@ -46,7 +46,7 @@ STOP_WORDS = {
 		"толкова", "точно", "три", "трябва", "тук", "тъй", "тя", "тях", "у", "утре", "харесва", "хиляди",
 		"ч", "часа", "че", "често", "чрез", "ще", "щом", "юмрук", "я", "як", "новини", "българия", 'ян', 'фев', 'мар',
 		"апр", "април", "май", "юни", "юли", "авг", "август", "сеп", "септември", "окт", "октомври", "ное", "ноември",
-		"дек", "декември", "януари", "февруари", "март", "новини", "спорт", "снимка", "снимки"
+		"дек", "декември", "януари", "февруари", "март", "новини", "спорт", "снимка", "снимки", "видео"
 	]
 }
 
@@ -82,6 +82,7 @@ def get_keywords(tokens, n=20):
 	freq_dist = FreqDist(tokens)
 	main_keywords = freq_dist.most_common(n)
 	return main_keywords
+
 
 def remove_bank_lines(text):
 	result = re.sub(r'^\s*\n', '', text, flags=re.MULTILINE)
