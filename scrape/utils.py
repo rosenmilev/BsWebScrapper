@@ -1,7 +1,7 @@
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 import string
-
+import re
 
 
 STOP_WORDS = {
@@ -82,3 +82,7 @@ def get_keywords(tokens, n=20):
 	freq_dist = FreqDist(tokens)
 	main_keywords = freq_dist.most_common(n)
 	return main_keywords
+
+def remove_bank_lines(text):
+	result = re.sub(r'^\s*\n', '', text, flags=re.MULTILINE)
+	return result

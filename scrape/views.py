@@ -8,7 +8,7 @@ from django.views.generic import CreateView, DeleteView
 
 from scrape.forms import ScrapeForm, CustomUserCreationForm, SaveDataForm
 from .models import ScrapedData
-from .utils import tokenize_text_to_words, get_keywords, filter_words
+from .utils import tokenize_text_to_words, get_keywords, filter_words, remove_bank_lines
 from bs4 import BeautifulSoup
 
 
@@ -37,7 +37,7 @@ def index(request):
 			text = scraped_data.text
 
 			if action_type == 'text':
-				result = scraped_data.text.strip()
+				result = remove_bank_lines(text)
 			else:
 				tokens = tokenize_text_to_words(text)
 				filtered_tokens = filter_words(tokens, language)
@@ -117,5 +117,4 @@ def profile(request):
 
 class DeleteUserSavedData(DeleteView):
 	model = ScrapedData
-	template_name = 'confirm_delete_data.html'
 	success_url = reverse_lazy('profile')
